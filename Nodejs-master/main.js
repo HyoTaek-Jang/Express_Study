@@ -9,11 +9,12 @@ var qs = require("querystring");
 const pageRouter = require("./routes/topic");
 const bodyParser = require("body-parser");
 const compression = require("compression");
+const cookie = require("cookie");
 
 var helmet = require("helmet");
+const app = express();
 app.use(helmet());
 
-const app = express();
 const port = 3000;
 // 정적 파일을 사용하기위해. 퍼플릭디렉토리 안에서 스태틱을 찾겠다.
 app.use(express.static("public"));
@@ -21,7 +22,15 @@ app.use(express.static("public"));
 // app은 요청이 들어올때마다 아래 use로 장착된걸 거침
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(compression());
-
+let isOwner = false;
+app.use((req, res) => {
+  if (req.headers.cookie !== undefined) {
+    //  객체로 전달해줌
+    cookies = cookie.parse(req.headers.cookie);
+    isOwner = true;
+    console.log(cookies);
+  }
+});
 //미들웨어는 ,로 연결하여 연달아 실행되게 할 수 잇음. 넥스트 안하면 거기서 끝.
 // next('route')와 next() 차이점, 다음 라우터 실행과 그냥 다음 미들웨어 실행.
 
@@ -51,6 +60,38 @@ app.get("/", (req, res) => {
   );
   //  기존 writehaed랑 end를 축약형
   res.send(html);
+});
+
+app.get("/login", (req, res) => {
+  var title = "Welcome";
+  var description = "Hello, Node.js";
+  var list = template.list(req.list);
+  var html = template.HTML(
+    title,
+    list,
+    `<h2>${title}</h2>${description} <img src="/images/img.jpg" style="width:100px; display : block;">`,
+    `
+    <form action="login_process" method="POST">
+    <p><input type="text" name="email" placeholder="email" /></p>
+    <p><input type="password" name="password" placeholder="PW" /></p>
+    <input type="submit">
+  </form>
+    <a href="/create">create</a>`
+  );
+  //  기존 writehaed랑 end를 축약형
+  res.send(html);
+});
+
+app.post("/login_process", (req, res) => {
+  body = req.body;
+  if (body.email === "gyxor8582@naver.com" && body.password === "111") {
+    res.setHeader("Set-Cookie", [
+      `emial=${body.email}`,
+      `password=${body.password}`,
+      `nickname=john`,
+    ]);
+    res.redirect("/");
+  } else res.send("who?");
 });
 
 //라우터 분리

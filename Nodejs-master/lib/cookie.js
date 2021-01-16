@@ -27,7 +27,7 @@ app.get("/", (req, res) => {
     //저 앞에 무슨 서브 도메인이 있든 얘는 살아있음
     `Domain=domain; Domain=o2.org`,
   ]);
-  res.send("Cookie");
+  res.send("cookies");
 });
 
 app.listen(3000, () => {});
