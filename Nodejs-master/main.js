@@ -9,7 +9,7 @@ var qs = require("querystring");
 const pageRouter = require("./routes/topic");
 const bodyParser = require("body-parser");
 const compression = require("compression");
-const cookie = require("cookie");
+// const cookie = require("cookie");
 
 var helmet = require("helmet");
 const app = express();
@@ -28,7 +28,6 @@ app.use((req, res) => {
     //  객체로 전달해줌
     cookies = cookie.parse(req.headers.cookie);
     isOwner = true;
-    console.log(cookies);
   }
 });
 //미들웨어는 ,로 연결하여 연달아 실행되게 할 수 잇음. 넥스트 안하면 거기서 끝.
