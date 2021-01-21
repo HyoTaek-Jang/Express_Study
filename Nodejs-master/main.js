@@ -9,7 +9,7 @@ var qs = require("querystring");
 const pageRouter = require("./routes/topic");
 const bodyParser = require("body-parser");
 const compression = require("compression");
-// const cookie = require("cookie");
+const cookie = require("cookie");
 
 var helmet = require("helmet");
 const app = express();
