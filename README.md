@@ -82,3 +82,50 @@
 - 프론트에서 동작하는 js는 정적경로로 스태틱 사용하고 public/java~에서 냅둬서 사용
 
 - html에 js 넣을때 스크립트 소스 넣고 defer 넣으면 페이지 실행되고 js 실행됨
+
+### fetch
+
+```
+js에서
+fetch("/login",{
+  method : "POST",
+  headers : {
+    "Content-Type" : "application/json",
+  },
+  body : JSON.stringify(data)
+}).then((res)=>res.json()).then((res)=>location.href ="/")
+```
+
+- 이거로 저 링크로 데이터를 보낼 수 있음.
+- location.href 로 링크이동 가능
+
+### 바디파서
+
+- express 안에 들어있음 걍 req.body 쓰면됨
+
+## 21년 1월 28일
+
+- 뷰와 컨트롤러의 통신
+  1. form 서밋
+  2. 에이젝스 통신
+  - 1번에 경우 반환값을 못받는 단점이 있음. 단순히 리다이랙션이나 데이터 처리하고 페이지 새로 띄울거면 ㄱㅊ. 로그인 경우 ㅇㅇ
+  - 2번은 데이터 통신이후 반환으로 뭔가 뷰에서 변화가 일어날때!
+  ```
+      $("#loginForm").submit((e) => {
+    $.ajax({
+      url: $("#loginForm").attr("action"),
+      type: "POST",
+      dataType: "json",
+      data: $("#loginForm").serialize(),
+      success: (data) => {
+        alert(data.result);
+        location.href = "/";
+      },
+    });
+  });
+  ```
+  - 이걸 보면 제이쿼리로 ajax를 호출함. 근데 언제하냐? form에 id를 걸어서 submit할때~
+  - dataType은 내가 서버에서 받을 데이터가 뭔지 ㅇㅇ
+  - data는 form에다가 serialize해서 넘겨주면 깔꼼하게 바디 파서로 나옴
+  - 컨트롤러에서 데이터 처리하고 반환을 하는 방법이 res.json res.send가 있는데
+  - object를 인자면 res.json이고 , string이면 res.send가 남
