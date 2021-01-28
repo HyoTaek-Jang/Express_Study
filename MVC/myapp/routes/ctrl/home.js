@@ -1,3 +1,6 @@
+const User = require("../../models/User");
+const UserStorage = require("../../models/UserStorage");
+
 module.exports = {
   output: {
     home: function (req, res, next) {
@@ -6,21 +9,20 @@ module.exports = {
     login: (req, res) => {
       res.render("home/login");
     },
+    register: (req, res) => {
+      res.render("home/register");
+    },
   },
   process: {
     login: (req, res) => {
-      const id = ["taek", "asdf", "df"];
-      const password = ["123", "31331", "12313"];
-      if (id.includes(req.body.id)) {
-        const idx = id.indexOf(req.body.id);
-        if (password[idx] == req.body.password) {
-          console.log(true);
-          return res.send({ result: "Success" });
-        } else return res.send({ result: "fail" });
-      } else {
-        console.log(false);
-        return res.send({ result: "fail" });
-      }
+      console.log(req.body);
+      const user = new User(req.body);
+      const login = user.login();
+      return res.json(login);
+    },
+    register: (req, res) => {
+      const signUpResult = UserStorage.setUser(req.body);
+      return res.json(signUpResult);
     },
   },
 };

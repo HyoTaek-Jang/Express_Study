@@ -105,27 +105,71 @@ fetch("/login",{
 
 ## 21년 1월 28일
 
-- 뷰와 컨트롤러의 통신
-  1. form 서밋
-  2. 에이젝스 통신
-  - 1번에 경우 반환값을 못받는 단점이 있음. 단순히 리다이랙션이나 데이터 처리하고 페이지 새로 띄울거면 ㄱㅊ. 로그인 경우 ㅇㅇ
-  - 2번은 데이터 통신이후 반환으로 뭔가 뷰에서 변화가 일어날때!
-  ```
-      $("#loginForm").submit((e) => {
-    $.ajax({
-      url: $("#loginForm").attr("action"),
-      type: "POST",
-      dataType: "json",
-      data: $("#loginForm").serialize(),
-      success: (data) => {
-        alert(data.result);
-        location.href = "/";
-      },
-    });
+### 뷰와 컨트롤러의 통신
+
+1. form 서밋
+2. 에이젝스 통신
+
+- 1번에 경우 반환값을 못받는 단점이 있음. 단순히 리다이랙션이나 데이터 처리하고 페이지 새로 띄울거면 ㄱㅊ. 로그인 경우 ㅇㅇ
+- 2번은 데이터 통신이후 반환으로 뭔가 뷰에서 변화가 일어날때!
+
+```
+    $("#loginForm").submit((e) => {
+  $.ajax({
+    url: $("#loginForm").attr("action"),
+    type: "POST",
+    dataType: "json",
+    data: $("#loginForm").serialize(),
+    success: (data) => {
+      alert(data.result);
+      location.href = "/";
+    },
   });
-  ```
-  - 이걸 보면 제이쿼리로 ajax를 호출함. 근데 언제하냐? form에 id를 걸어서 submit할때~
-  - dataType은 내가 서버에서 받을 데이터가 뭔지 ㅇㅇ
-  - data는 form에다가 serialize해서 넘겨주면 깔꼼하게 바디 파서로 나옴
-  - 컨트롤러에서 데이터 처리하고 반환을 하는 방법이 res.json res.send가 있는데
-  - object를 인자면 res.json이고 , string이면 res.send가 남
+});
+```
+
+- 이걸 보면 제이쿼리로 ajax를 호출함. 근데 언제하냐? form에 id를 걸어서 submit할때~
+- dataType은 내가 서버에서 받을 데이터가 뭔지 ㅇㅇ
+- data는 form에다가 serialize해서 넘겨주면 깔꼼하게 바디 파서로 나옴
+- 컨트롤러에서 데이터 처리하고 반환을 하는 방법이 res.json res.send가 있는데
+- object를 인자면 res.json이고 , string이면 res.send가 남
+
+### 모델 만들기 개쩜
+
+- models에 이씀
+- 스태틱하게 만듬.
+
+```
+  // # 붙이면 외부에서 못보게 은닉화 함
+  static #users = {
+    id: ["taek", "asdf", "df"],
+    password: ["123", "31331", "12313"],
+    name: ["a", "b", "c"],
+  };
+
+  // 파라미터에 ... 표시하면 가변인자가 들어옴 리스트로
+  static getUsers(...fields) {
+    const users = this.#users;
+    // 필드는 필드즈 순회
+    const newUsers = fields.reduce((newUsers, field) => {
+      if (users.hasOwnProperty(field)) {
+        newUsers[field] = users[field];
+      }
+      // 리턴하면 다시 뉴유저스로 들어감
+      return newUsers;
+      // 중괄호는 처음 뉴유저스 초기값, 없으면 필드즈의 첫번재 값
+    }, {});
+    return newUsers;
+  }
+```
+
+### 로그인최적화
+
+- 모델에 유저라는 파일을 만들고 클래스를 활용해서, 유저에 데이터를 넣어주고 거기서 로그인 이것저것하고 반환값 던져주는...
+- 유저에서 유저스토리지를 사용해서 info를 가져오고 ...
+- 와 그냥 개쩜 뭔가 난 따라했지만 코드 좋은듯
+
+### 오픈소스 ui
+
+- 코드팬!
+- 카피라이트 확인 잘해야함
