@@ -21,7 +21,8 @@ module.exports = {
       return res.json(login);
     },
     register: (req, res) => {
-      const signUpResult = UserStorage.setUser(req.body);
+      const user = new User(req.body);
+      const signUpResult = user.register();
       return res.json(signUpResult);
     },
   },

@@ -1,14 +1,10 @@
-"use strict";
-
-const { map } = require("../app");
+//프로미시스를 붙이면 fs에 관련 내용은 프로미스를 반환함
+// 어웨잇은 프로미스를 반환하는 애한테 붙여야함
+const fs = require("fs");
 
 class UserStorage {
   // # 붙이면 외부에서 못보게 은닉화 함
-  static #users = {
-    name: ["a", "b", "c"],
-    id: ["taek", "asdf", "df"],
-    password: ["123", "31331", "12313"],
-  };
+  static #users = JSON.parse(fs.readFileSync("./DB/MVC/users.json", "utf8"));
 
   // 파라미터에 ... 표시하면 가변인자가 들어옴 리스트로
   static getUsers(...fields) {
@@ -42,8 +38,9 @@ class UserStorage {
     Object.keys(users).map((key) => {
       users[key].push(data[key]);
     });
-    this.#users = users;
-    console.log(this.#users);
+
+    fs.writeFileSync("./DB/MVC/users.json", JSON.stringify(users));
+
     return { result: "Success", msg: "굿" };
   }
 }
