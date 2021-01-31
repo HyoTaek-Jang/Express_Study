@@ -1,5 +1,4 @@
 const User = require("../../models/User");
-const UserStorage = require("../../models/UserStorage");
 
 module.exports = {
   output: {
@@ -14,15 +13,15 @@ module.exports = {
     },
   },
   process: {
-    login: (req, res) => {
-      console.log(req.body);
+    login: async (req, res) => {
       const user = new User(req.body);
-      const login = user.login();
+      const login = await user.login();
       return res.json(login);
     },
-    register: (req, res) => {
+    register: async (req, res) => {
       const user = new User(req.body);
-      const signUpResult = user.register();
+      const signUpResult = await user.register();
+      console.log(signUpResult);
       return res.json(signUpResult);
     },
   },

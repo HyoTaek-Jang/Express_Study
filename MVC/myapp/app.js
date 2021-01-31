@@ -3,6 +3,10 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+const dotenv = require("dotenv");
+const fs = require("fs");
+
+dotenv.config();
 
 var indexRouter = require("./routes/index");
 
@@ -12,7 +16,10 @@ var app = express();
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
-app.use(logger("dev"));
+const accesssLogStream = fs.createWriteStream(`${__dirname}/log/access.log`, {
+  flags: "a",
+});
+app.use(logger("dev", { stream: accesssLogStream }));
 app.use(express.json());
 // 이걸 트루로 하면 url로 들어오는 데이터가 온전하게 들어옴
 app.use(express.urlencoded({ extended: true }));

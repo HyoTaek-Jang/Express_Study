@@ -178,3 +178,36 @@ fetch("/login",{
 
 - git tag 잘 사용하기
 - 압축파일로 쓸 수도 있고 관리하기 편함 ㅇㅇ
+
+### aws korean만들기... 안전한 db세팅.. 우리밋 구독..
+
+### 만들고 꼭 인바운드 설정해주기 그래야지 접속이 된당
+
+## 21년 1월 30일
+
+- config 폴더는 프로젝트의 민간한 설정이 들어있음 예를 들면 db
+- WAS와 웹서버 차이
+  - WAS는 데이터를 가공해서 넘기고, 웹서버는 날 것 그대로 넘김
+
+## 21년 1월 31일
+
+- 노드js 프로젝트를 위한 환경변수 셋팅
+- 환경변수는 os에 변수를 등록
+- os전반에 걸쳐 모두에게 적용되는 변수
+- dotenv로 모듈로 관리함
+- 개발은 팀으로 하는데 운영체제가 다 다름. 그래서 dotenv로 다른 os라도 환경변수 동일하게 등록하고 가져올 수 있음
+- 폴더에 .env라는 파일 생성 이름은 통일
+- 접근은 process.env.~~로 함
+- 보안!! 그래서 .env는 깃헙에 안올림
+- 노드 자동으로 .env 이그노어임
+
+### 로그
+
+- morgan
+
+```
+const accesssLogStream = fs.createWriteStream(`${__dirname}/log/access.log`, {
+  flags: "a",
+});
+app.use(logger("dev", { stream: accesssLogStream }));
+```

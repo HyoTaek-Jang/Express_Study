@@ -8,8 +8,8 @@ $("#loginForm").submit((e) => {
       id: $("#id").val(),
       password: $("#password").val(),
     },
-    // data: $("#loginForm").serialize(),
     success: (result) => {
+      alert(result.msg);
       if (result.result == "Success") location.href = "/";
       else {
         alert(result.msg);
@@ -17,9 +17,10 @@ $("#loginForm").submit((e) => {
       }
     },
     error: (err) => {
+      alert(result);
+
       console.log(err);
       alert("로그인 중 오류발생");
-      // location.href = "/";
     },
   });
 });

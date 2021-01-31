@@ -14,7 +14,7 @@ $("#registerForm").submit((e) => {
     error: (err) => {
       console.error(err);
       alert("회원가입 중 오류발생");
-      // location.href = "/";
+      location.href = "/register";
     },
   });
 });
