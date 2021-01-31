@@ -1,4 +1,5 @@
 $("#registerForm").submit((e) => {
+  e.preventDefault();
   $.ajax({
     url: $("#registerForm").attr("action"),
     type: "POST",

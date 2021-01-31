@@ -16,6 +16,8 @@ module.exports = {
     login: async (req, res) => {
       const user = new User(req.body);
       const login = await user.login();
+      console.log(login);
+
       return res.json(login);
     },
     register: async (req, res) => {

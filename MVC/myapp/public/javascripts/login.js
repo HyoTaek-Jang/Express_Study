@@ -1,4 +1,5 @@
 $("#loginForm").submit((e) => {
+  e.preventDefault();
   console.log($("#loginForm").serialize());
   $.ajax({
     url: $("#loginForm").attr("action"),
@@ -9,7 +10,8 @@ $("#loginForm").submit((e) => {
       password: $("#password").val(),
     },
     success: (result) => {
-      alert(result.msg);
+      console.log(result);
+      alert(result.result);
       if (result.result == "Success") location.href = "/";
       else {
         alert(result.msg);

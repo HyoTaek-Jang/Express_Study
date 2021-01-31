@@ -20,6 +20,7 @@ const accesssLogStream = fs.createWriteStream(`${__dirname}/log/access.log`, {
   flags: "a",
 });
 app.use(logger("dev", { stream: accesssLogStream }));
+app.use(logger("dev"));
 app.use(express.json());
 // 이걸 트루로 하면 url로 들어오는 데이터가 온전하게 들어옴
 app.use(express.urlencoded({ extended: true }));
