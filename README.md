@@ -208,6 +208,11 @@ fetch("/login",{
 ```
 const accesssLogStream = fs.createWriteStream(`${__dirname}/log/access.log`, {
   flags: "a",
-});
+}); <- 이 친구는 따로 모듈로 빼서 관리함.
 app.use(logger("dev", { stream: accesssLogStream }));
 ```
+
+### form 이중 호출 문제 해결
+
+- form submit의 기본적인 get과 js에서 ajax로인한 post가 동시에 발생하여 정상작동을 안함
+- preventDefault()를 활용하여 문제해결! 야호! 우리밋 최고
