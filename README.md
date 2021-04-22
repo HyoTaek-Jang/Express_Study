@@ -183,7 +183,7 @@ fetch("/login",{
 
 ### 만들고 꼭 인바운드 설정해주기 그래야지 접속이 된당
 
-## 21년 1월 30일
+## 21년 1월 30일pm2
 
 - config 폴더는 프로젝트의 민간한 설정이 들어있음 예를 들면 db
 - WAS와 웹서버 차이
@@ -216,3 +216,9 @@ app.use(logger("dev", { stream: accesssLogStream }));
 
 - form submit의 기본적인 get과 js에서 ajax로인한 post가 동시에 발생하여 정상작동을 안함
 - preventDefault()를 활용하여 문제해결! 야호! 우리밋 최고
+
+## 21년 2월 10일
+
+### passport
+
+- passport는 세션을 사용하기에 세션 다음에 있어야함.
