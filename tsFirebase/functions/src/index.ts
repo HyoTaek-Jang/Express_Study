@@ -10,10 +10,4 @@ export const helloWorld = functions.https.onRequest((request, response) => {
   response.send("Hello from Firebase!");
 });
 
-// const app = express();
-
-// app.get("/123", (req, res) => {
-//   res.send("123");
-// });
-
 export const testRoute = functions.https.onRequest(router);

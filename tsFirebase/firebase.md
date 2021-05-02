@@ -20,3 +20,21 @@ functions.https.onRequest((req, res) =>{})
 - HTTP 함수가 올바르게 종료되는지 체크!! res.redirect(), res.send() 또는 res.end()로 HTTP 함수를 종료!! 과금 주의!
 
 기존 Express 사용 가능
+
+cors 미들웨어
+
+# 일정에 따라 함수 실행
+
+[https://firebase.google.com/docs/functions/schedule-functions?authuser=1]
+functions.pubsub.schedule().onRun()
+
+# 백그라운드 함수 트리거
+
+onWrite는 모든 변화 ㅇㅇ!
+에뮬레이터에서도 확인 가능하네 개쩐다 진짜!!
+
+# Ts 모듈 익스포트
+
+[https://velog.io/@jkzombie/Typescript-%EC%9D%B5%ED%9E%88%EA%B8%B0-lib]
+해결법
+[https://pewww.tistory.com/26]
