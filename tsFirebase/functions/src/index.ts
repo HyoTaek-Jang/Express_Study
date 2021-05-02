@@ -1,6 +1,9 @@
 import * as functions from "firebase-functions";
 // import express from "express";
 import router from "./router/testRouter";
+// const admin = require("firebase-admin");
+
+// admin.initializeApp();
 
 // Start writing Firebase Functions
 // https://firebase.google.com/docs/functions/typescript

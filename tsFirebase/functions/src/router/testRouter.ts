@@ -1,4 +1,5 @@
 import express from "express";
+import dbModel from "../model/db";
 
 const router = express();
 
@@ -18,5 +19,7 @@ router.get("/asd/:id", (req, res) => {
   console.log(req.query.asd);
   res.send("get /:id" + req.params.id);
 });
+
+router.post("/dbSet", dbModel);
 
 export = router;
