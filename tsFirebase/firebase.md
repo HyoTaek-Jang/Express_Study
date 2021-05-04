@@ -38,3 +38,133 @@ onWrite는 모든 변화 ㅇㅇ!
 [https://velog.io/@jkzombie/Typescript-%EC%9D%B5%ED%9E%88%EA%B8%B0-lib]
 해결법
 [https://pewww.tistory.com/26]
+
+# 데이터 추가
+
+기존 문서 병합
+
+```
+const cityRef = db.collection('cities').doc('BJ');
+
+const res = await cityRef.set({
+  capital: true
+}, { merge: true });
+```
+
+문서 추가
+
+```
+await db.collection('cities').doc('new-city-id').set(data);
+```
+
+ID 자동생성 : add()
+
+```
+const res = await db.collection('cities').add({
+  name: 'Tokyo',
+  country: 'Japan'
+});
+
+console.log('Added document with ID: ', res.id);
+```
+
+참조 후 사용하기 doc() -> set()
+
+```
+const newCityRef = db.collection('cities').doc();
+
+// Later...
+const res = await newCityRef.set({
+  // ...
+});
+```
+
+업데이트 update()
+
+```
+const cityRef = db.collection('cities').doc('DC');
+
+// Set the 'capital' field of the city
+const res = await cityRef.update({capital: true});
+```
+
+타임스탬프
+
+```
+// Get the `FieldValue` object
+const FieldValue = admin.firestore.FieldValue;
+
+// Create a document reference
+const docRef = db.collection('objects').doc('some-id');
+
+// Update the timestamp field with the value from the server
+const res = await docRef.update({
+  timestamp: FieldValue.serverTimestamp()
+});
+```
+
+중첩된 객체 필드 접근
+
+```
+const initialData = {
+  name: 'Frank',
+  age: 12,
+  favorites: {
+    food: 'Pizza',
+    color: 'Blue',
+    subject: 'recess'
+  }
+};
+
+// ...
+const res = await db.collection('users').doc('Frank').update({
+  age: 13,
+  'favorites.color': 'Red'
+});
+```
+
+작업하고 다음 작업하기 then!
+
+```
+db.collection("users").doc("frank").set({
+  name: "Frank",
+  favorites: {
+    food: "Pizza",
+    color: "Blue",
+    subject: "Recess"
+  },
+  age: 12
+}).then(function() {
+  console.log("Frank created");
+});
+```
+
+배열 요소 업데이트
+
+문서에 배열 필드가 포함되어 있으면 arrayUnion() 및 arrayRemove()를 사용해 요소를 추가하거나 삭제할 수 있습니다. arrayUnion()은 배열에 없는 요소만 추가하고, arrayRemove()는 제공된 각 요소의 모든 인스턴스를 삭제합니다.
+
+```
+const admin = require('firebase-admin');
+// ...
+const washingtonRef = db.collection('cities').doc('DC');
+
+// Atomically add a new region to the "regions" array field.
+const unionRes = await washingtonRef.update({
+  regions: admin.firestore.FieldValue.arrayUnion('greater_virginia')
+});
+// Atomically remove a region from the "regions" array field.
+const removeRes = await washingtonRef.update({
+  regions: admin.firestore.FieldValue.arrayRemove('east_coast')
+});
+```
+
+```
+const admin = require('firebase-admin');
+// ...
+const washingtonRef = db.collection('cities').doc('DC');
+
+// Atomically increment the population of the city by 50.
+const res = await washingtonRef.update({
+  population: admin.firestore.FieldValue.increment(50)
+});
+```
