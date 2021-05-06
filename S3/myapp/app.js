@@ -8,6 +8,8 @@ const fileUpload = require("express-fileupload");
 const cors = require("cors");
 const morgan = require("morgan");
 const _ = require("lodash");
+const multer = require("multer");
+const bodyParser = require("body-parser");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
@@ -34,31 +36,44 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+// app.use(bodyParser());
 
-app.post("/upload", (req, res) => {
-  try {
-    if (!req.files) {
-      res.send({
-        status: false,
-        message: "파일 업로드 실패",
-      });
-    } else {
-      let f = req.files.fileUpload;
-      f.mv("./uploads/" + f.name);
-      res.send({
-        status: true,
-        message: "파일이 업로드 되었습니다.",
-        data: {
-          name: f.name,
-          minetype: f.minetype,
-          size: f.size,
-        },
-      });
-    }
-  } catch (err) {
-    console.log(err);
-    res.status(500).send(err);
-  }
+let upload = multer();
+// const buffer = new Buffer.from(image.buffer, "ascii");
+
+app.post("/photo", upload.none, (req, res) => {
+  // upload.single("photo")(req, res, (err) => {
+  //   if (err) console.log(err);
+
+  // });
+  console.log(req.body);
+
+  // console.log(req.file.size);
+  // try {
+  //   if (!req.files) {
+  //     res.send({
+  //       status: false,
+  //       message: "파일 업로드 실패",
+  //     });
+  //   } else {
+  //     let f = req.files.fileUpload;
+  //     f.mv("./uploads/" + f.name);
+  //     res.send({
+  //       status: true,
+  //       message: "파일이 업로드 되었습니다.",
+  //       data: {
+  //         name: f.name,
+  //         minetype: f.minetype,
+  //         size: f.size,
+  //       },
+  //     });
+  //   }
+  // } catch (err) {
+  //   console.log(err);
+  //   res.status(500).send(err);
+  // }
+
+  res.send(req.body);
 });
 app.use("/", indexRouter);
 app.use("/users", usersRouter);

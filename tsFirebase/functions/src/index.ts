@@ -14,3 +14,11 @@ export const helloWorld = functions.https.onRequest((request, response) => {
 });
 
 export const testRoute = functions.https.onRequest(router);
+
+// import multer = require("multer");
+// var upload = multer({ storage: multer.memoryStorage() });
+
+export const photo = functions.https.onRequest((request, response) => {
+  console.log(request.body);
+  response.send("good");
+});

@@ -1,8 +1,12 @@
 import * as admin from "firebase-admin";
-import { Request, Response } from "express";
-
 admin.initializeApp();
 const db = admin.firestore();
+const storage = admin.storage();
+import { Request, Response } from "express";
+// import multer = require("multer");
+// var upload = multer({ storage: multer.memoryStorage() });
+
+import stream = require("stream");
 
 const dbSet = async (req: Request, res: Response) => {
   //   let id: number = 0;
@@ -90,4 +94,38 @@ const dbQuery = async (req: Request, res: Response) => {
   res.send("good");
 };
 
-export { dbSet, dbGet, dbTestSet, dbQuery };
+interface MulterRequest extends Request {
+  files: any;
+}
+
+const storageSet = async (req: Request, res: Response) => {
+  let image = (req as MulterRequest).files[0];
+  // let image: Express.Multer.File = req.file;
+  const fileName: string = image.originalname;
+  const bufferStream = new stream.PassThrough();
+  // let a = new (Buffer.from(image.buffer, "ascii") as any);
+  // const buf = new (Buffer.from(image.buffer, "ascii") as any);
+  const buffer: Buffer = Buffer.from(image.buffer, "ascii");
+  bufferStream.end(buffer);
+
+  let file = storage.bucket().file(`test/${fileName}`);
+
+  bufferStream
+    .pipe(
+      file.createWriteStream({
+        metadata: {
+          contentType: image.mimetype,
+        },
+      })
+    )
+    .on("error", (err) => {
+      console.log("err : ", err);
+    })
+    .on("finish", () => {
+      console.log(fileName + "finish");
+    });
+
+  res.send("good");
+};
+
+export { dbSet, dbGet, dbTestSet, dbQuery, storageSet };
